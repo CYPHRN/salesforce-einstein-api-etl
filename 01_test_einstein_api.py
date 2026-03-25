@@ -46,7 +46,7 @@ print()
 print("Category Recommenders")
 for recommender in category_recommenders:
     for cat_id, cat_name in categories:
-        r = requests.get(f"{BASE}/{recommender}", headers=HEADERS, params={"categoryId": cat_id})
+        r = requests.post(f"{BASE}/{recommender}", headers=HEADERS, json={"categories": [{"id": cat_id}], "cookieId": "test"})
         recs = r.json().get("recs", [])
         print(f"  {recommender} | {cat_name} ({cat_id}) | {len(recs)} results")
         if recs:
@@ -59,7 +59,7 @@ print()
 # Test product recommenders
 print("Product Recommenders")
 for recommender in product_recommenders:
-    r = requests.get(f"{BASE}/{recommender}", headers=HEADERS, params={"products": test_product})
+    r = requests.post(f"{BASE}/{recommender}", headers=HEADERS, json={"products": [{"id": test_product}], "cookieId": "test"})
     recs = r.json().get("recs", [])
     print(f"  {recommender} | product={test_product} | {len(recs)} results")
     if recs:
